@@ -67,39 +67,16 @@
       </div>
     </form>
     <div id="result" class="mt-6 text-center"></div>
-    <div id="gallery" class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
-      <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG" alt="Espresso"
-          class="rounded shadow">
-        <p class="text-white mt-2">Espresso</p>
-      </div>
-      <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Caff%C3%A8_Latte_at_Sightglass_Coffee.jpg"
-          alt="Latte" class="rounded shadow">
-        <p class="text-white mt-2">Latte</p>
-      </div>
-      <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Iced_latte_with_milk.jpg" alt="Iced Vanilla Latte"
-          class="rounded shadow">
-        <p class="text-white mt-2">Iced Vanilla Latte</p>
-      </div>
-      <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Frappuccino_Starbucks.jpg" alt="Frappuccino"
-          class="rounded shadow">
-        <p class="text-white mt-2">Frappuccino de Caramelo</p>
-      </div>
-    </div>
   </div>
 
   <script>
     const coffeeForm = document.getElementById("coffeeForm");
     const resultDiv = document.getElementById("result");
-    const galleryDiv = document.getElementById("gallery");
 
     const coffeeOptions = {
       "hot-strong-milk-none-no": {
         name: "Latte",
-        image: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Caff%C3%A8_Latte_at_Sightglass_Coffee.jpg"
+        image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/97/ff/a3/photo0jpg.jpg?w=900&h=500&s=1"
       },
       "hot-strong-no-milk-none-no": {
         name: "Espresso",
@@ -107,29 +84,32 @@
       },
       "cold-mild-milk-vanilla-yes": {
         name: "Iced Vanilla Latte con crema batida",
-        image: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Iced_latte_with_milk.jpg"
+        image: "https://i0.wp.com/www.yesmooretea.com/wp-content/uploads/2022/03/Honey-Oatmilk-Latte-6.jpg"
       },
       "cold-strong-no-milk-caramel-no": {
         name: "Cold Brew con caramelo",
-        image: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Cold_Brew_Coffee.jpg"
+        image: "https://lifemadesweeter.com/wp-content/uploads/Easy-Cold-Brew-Coffee-Recipe-Vegan-Dairy-Free-Paleo-Healthy.jpg"
       },
-      "hot-mild-milk-caramel-yes": {
-        name: "Caramel Macchiato",
-        image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Caramel_macchiato.jpg"
-      },
-      "cold-mild-no-milk-none-no": {
-        name: "Iced Americano",
-        image: "https://upload.wikimedia.org/wikipedia/commons/8/84/Iced_americano_coffee.jpg"
-      },
-      "hot-mild-milk-vanilla-no": {
-        name: "Vanilla Latte",
-        image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Vanilla_Latte_with_lattee_art.jpg"
-      },
-      "cold-strong-milk-caramel-yes": {
-        name: "Frappuccino de caramelo",
-        image: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Frappuccino_Starbucks.jpg"
-      }
     };
+
+    const galleryOptions = [
+      {
+        name: "Cappuccino",
+        image: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Cappuccino_at_Sightglass_Coffee.jpg"
+      },
+      {
+        name: "Frappuccino",
+        image: "https://s1.abcstatics.com/abc/sevilla/media/gurme/2023/07/05/s/frappuccino-starbucks-kmGG--1248x698@abc.jpg"
+      },
+      {
+        name: "Café Americano",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG"
+      },
+      {
+        name: "Macchiato",
+        image: "https://liliebakery.fr/wp-content/uploads/2024/10/latte-macchiato-recette-facile-lilie-bakery-500x500.jpg"
+      }
+    ];
 
     coffeeForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -142,10 +122,18 @@
           <h2 class="text-xl font-semibold mb-2">Te sugerimos: ${coffee.name}</h2>
           <img src="${coffee.image}" alt="${coffee.name}" class="mx-auto rounded shadow-lg w-full max-w-xs">
         `;
-        galleryDiv.classList.add("hidden");
       } else {
-        resultDiv.innerHTML = `<p class="text-lg">Lo sentimos, no encontramos una coincidencia exacta para tu selección. Aquí hay algunas opciones:</p>`;
-        galleryDiv.classList.remove("hidden");
+        resultDiv.innerHTML = `
+          <p class="text-lg mb-4">Lo sentimos, no encontramos una coincidencia exacta para tu selección. Aquí tienes otras opciones:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            ${galleryOptions.map(option => `
+              <div class="bg-white bg-opacity-20 backdrop-blur-md rounded p-2 text-white">
+                <h3 class="font-semibold text-center">${option.name}</h3>
+                <img src="${option.image}" alt="${option.name}" class="rounded mx-auto mt-2 w-full max-w-xs">
+              </div>
+            `).join('')}
+          </div>
+        `;
       }
     });
   </script>
