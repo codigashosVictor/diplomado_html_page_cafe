@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Qué café pedir?</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen px-4">
+  <div class="glass p-6 sm:p-8 w-full max-w-md text-white">
+    <h1 class="text-2xl font-bold mb-4 text-center">¿Qué café pedir?</h1>
+    <form id="coffeeForm" class="space-y-4">
+      <div>
+        <label class="block mb-1">¿Prefieres algo caliente o frío?</label>
+        <select name="temperature" class="w-full p-2 rounded text-black">
+          <option value="hot">Caliente</option>
+          <option value="cold">Frío</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1">¿Te gusta el café fuerte o suave?</label>
+        <select name="strength" class="w-full p-2 rounded text-black">
+          <option value="strong">Fuerte</option>
+          <option value="mild">Suave</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1">¿Con o sin leche?</label>
+        <select name="milk" class="w-full p-2 rounded text-black">
+          <option value="milk">Con leche</option>
+          <option value="no-milk">Sin leche</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1">¿Deseas que tenga sabor (vainilla, caramelo)?</label>
+        <select name="flavor" class="w-full p-2 rounded text-black">
+          <option value="none">Sin sabor</option>
+          <option value="vanilla">Vainilla</option>
+          <option value="caramel">Caramelo</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1">¿Deseas crema batida?</label>
+        <select name="cream" class="w-full p-2 rounded text-black">
+          <option value="yes">Sí</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="bg-white text-black px-4 py-2 rounded font-semibold">Ver sugerencia</button>
+      </div>
+    </form>
+    <div id="result" class="mt-6 text-center"></div>
+    <div id="gallery" class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 hidden">
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG" alt="Espresso"
+          class="rounded shadow">
+        <p class="text-white mt-2">Espresso</p>
+      </div>
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Caff%C3%A8_Latte_at_Sightglass_Coffee.jpg"
+          alt="Latte" class="rounded shadow">
+        <p class="text-white mt-2">Latte</p>
+      </div>
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Iced_latte_with_milk.jpg" alt="Iced Vanilla Latte"
+          class="rounded shadow">
+        <p class="text-white mt-2">Iced Vanilla Latte</p>
+      </div>
+      <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Frappuccino_Starbucks.jpg" alt="Frappuccino"
+          class="rounded shadow">
+        <p class="text-white mt-2">Frappuccino de Caramelo</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const coffeeForm = document.getElementById("coffeeForm");
+    const resultDiv = document.getElementById("result");
+    const galleryDiv = document.getElementById("gallery");
+
+    const coffeeOptions = {
+      "hot-strong-milk-none-no": {
+        name: "Latte",
+        image: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Caff%C3%A8_Latte_at_Sightglass_Coffee.jpg"
+      },
+      "hot-strong-no-milk-none-no": {
+        name: "Espresso",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG"
+      },
+      "cold-mild-milk-vanilla-yes": {
+        name: "Iced Vanilla Latte con crema batida",
+        image: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Iced_latte_with_milk.jpg"
+      },
+      "cold-strong-no-milk-caramel-no": {
+        name: "Cold Brew con caramelo",
+        image: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Cold_Brew_Coffee.jpg"
+      },
+      "hot-mild-milk-caramel-yes": {
+        name: "Caramel Macchiato",
+        image: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Caramel_macchiato.jpg"
+      },
+      "cold-mild-no-milk-none-no": {
+        name: "Iced Americano",
+        image: "https://upload.wikimedia.org/wikipedia/commons/8/84/Iced_americano_coffee.jpg"
+      },
+      "hot-mild-milk-vanilla-no": {
+        name: "Vanilla Latte",
+        image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Vanilla_Latte_with_lattee_art.jpg"
+      },
+      "cold-strong-milk-caramel-yes": {
+        name: "Frappuccino de caramelo",
+        image: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Frappuccino_Starbucks.jpg"
+      }
+    };
+
+    coffeeForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const { temperature, strength, milk, flavor, cream } = coffeeForm;
+      const key = `${temperature.value}-${strength.value}-${milk.value}-${flavor.value}-${cream.value}`;
+      const coffee = coffeeOptions[key];
+
+      if (coffee) {
+        resultDiv.innerHTML = `
+          <h2 class="text-xl font-semibold mb-2">Te sugerimos: ${coffee.name}</h2>
+          <img src="${coffee.image}" alt="${coffee.name}" class="mx-auto rounded shadow-lg w-full max-w-xs">
+        `;
+        galleryDiv.classList.add("hidden");
+      } else {
+        resultDiv.innerHTML = `<p class="text-lg">Lo sentimos, no encontramos una coincidencia exacta para tu selección. Aquí hay algunas opciones:</p>`;
+        galleryDiv.classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+
+</html>
